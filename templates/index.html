@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Pro - Advanced Weather Application</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="navbar-content">
+                <div class="navbar-brand">
+                    <span class="weather-icon">🌤️</span>
+                    Weather Pro
+                </div>
+                <div class="navbar-menu">
+                    <button class="navbar-item active" data-tab="current">Current</button>
+                    <button class="navbar-item" data-tab="forecast">Forecast</button>
+                    <button class="navbar-item" data-tab="maps">Maps</button>
+                    <button class="navbar-item" data-tab="alerts">Alerts</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <div class="search-wrapper">
+                <input type="text" id="location-search" placeholder="Search for a city..." class="search-input">
+                <button id="search-btn" class="search-btn">🔍</button>
+                <button id="location-btn" class="location-btn" title="Use my location">📍</button>
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Current Weather Tab -->
+            <div id="current-tab" class="tab-content active">
+                <div class="weather-card">
+                    <div class="card-header">
+                        <h1 class="title">Current Weather</h1>
+                        <p class="subtitle">Real-time weather information</p>
+                    </div>
+                    
+                    <div class="weather-display" id="weather">
+                        <div class="loading-container">
+                            <div class="loading-spinner"></div>
+                            <p class="loading-text">Getting your location...</p>
+                        </div>
+                    </div>
+
+                    <div class="weather-details" id="weather-details" style="display: none;">
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <span class="detail-icon">🌡️</span>
+                                <span class="detail-label">Feels like</span>
+                                <span class="detail-value" id="feels-like">--</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">💧</span>
+                                <span class="detail-label">Humidity</span>
+                                <span class="detail-value" id="humidity">--</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🌪️</span>
+                                <span class="detail-label">Wind</span>
+                                <span class="detail-value" id="wind">--</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📊</span>
+                                <span class="detail-label">Pressure</span>
+                                <span class="detail-value" id="pressure">--</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">👁️</span>
+                                <span class="detail-label">Visibility</span>
+                                <span class="detail-value" id="visibility">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="refresh-btn" id="refresh-btn" onclick="refreshWeather()">
+                        <span class="btn-icon">🔄</span>
+                        Refresh Weather
+                    </button>
+                </div>
+            </div>
+
+            <!-- Forecast Tab -->
+            <div id="forecast-tab" class="tab-content">
+                <div class="forecast-container">
+                    <h2 class="section-title">5-Day Weather Forecast</h2>
+                    <div id="forecast-content" class="forecast-grid">
+                        <div class="loading-container">
+                            <div class="loading-spinner"></div>
+                            <p class="loading-text">Loading forecast...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Maps Tab -->
+            <div id="maps-tab" class="tab-content">
+                <div class="maps-container">
+                    <h2 class="section-title">Weather Maps</h2>
+                    <div class="map-controls">
+                        <button class="map-layer-btn active" data-layer="temp">Temperature</button>
+                        <button class="map-layer-btn" data-layer="precipitation">Precipitation</button>
+                        <button class="map-layer-btn" data-layer="wind">Wind</button>
+                        <button class="map-layer-btn" data-layer="clouds">Clouds</button>
+                    </div>
+                    <div id="weather-map" class="weather-map"></div>
+                </div>
+            </div>
+
+            <!-- Alerts Tab -->
+            <div id="alerts-tab" class="tab-content">
+                <div class="alerts-container">
+                    <h2 class="section-title">Weather Alerts</h2>
+                    <div id="alerts-content" class="alerts-content">
+                        <div class="loading-container">
+                            <div class="loading-spinner"></div>
+                            <p class="loading-text">Loading alerts...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Weather Pro.</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
