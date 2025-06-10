@@ -71,17 +71,25 @@ def forecast():
                 "description": item["weather"][0]["description"],
                 "icon": item["weather"][0]["icon"],
                 "humidity": item["main"]["humidity"],
-                "wind_speed": item["wind"]["speed"]
+                "pressure": item["main"]["pressure"],
+                "wind_speed": item["wind"]["speed"],
+                "pressure_count": 1,
+                "humidity_count": 1
             }
         else:
             daily_forecasts[date]["temp_min"] = min(daily_forecasts[date]["temp_min"], item["main"]["temp"])
             daily_forecasts[date]["temp_max"] = max(daily_forecasts[date]["temp_max"], item["main"]["temp"])
-    
-    # Convert to list and round temperatures
+            daily_forecasts[date]["humidity"] += item["main"]["humidity"]
+            daily_forecasts[date]["pressure"] += item["main"]["pressure"]
+            daily_forecasts[date]["humidity_count"] += 1
+            daily_forecasts[date]["pressure_count"] += 1
+    # Convert to list and round temperatures, humidity, and pressure
     forecast_list = []
     for forecast in list(daily_forecasts.values())[:5]:  # 5-day forecast
         forecast["temp_min"] = round(forecast["temp_min"])
         forecast["temp_max"] = round(forecast["temp_max"])
+        forecast["humidity"] = round(forecast["humidity"] / forecast["humidity_count"])
+        forecast["pressure"] = round(forecast["pressure"] / forecast["pressure_count"])
         forecast_list.append(forecast)
     
     return jsonify({

@@ -209,25 +209,34 @@ async function loadWeatherForLocation(lat, lon) {
 function displayCurrentWeather(data) {
     const weatherDisplay = document.getElementById('weather');
     const weatherDetails = document.getElementById('weather-details');
-    
     const weatherIcon = getWeatherIcon(data.description, data.icon);
-    
+
     weatherDisplay.innerHTML = `
-        <div class="weather-main">
+        <div class="weather-main highlight-weather">
             <div class="location-name">${data.location}</div>
             <div class="weather-icon-large">${weatherIcon}</div>
-            <div class="temperature-display">${data.temperature}°C</div>
+            <div class="temperature-display main-stat">${data.temperature}°C</div>
+            <div class="weather-stats-row">
+                <div class="stat-block humidity-block">
+                    <span class="stat-label">Humidity</span>
+                    <span class="stat-value">${data.humidity}%</span>
+                </div>
+                <div class="stat-block pressure-block">
+                    <span class="stat-label">Pressure</span>
+                    <span class="stat-value">${data.pressure} hPa</span>
+                </div>
+            </div>
             <div class="weather-description">${data.description}</div>
         </div>
     `;
-    
+
     // Update detail values
     document.getElementById('feels-like').textContent = `${data.feels_like}°C`;
     document.getElementById('humidity').textContent = `${data.humidity}%`;
     document.getElementById('wind').textContent = `${data.wind_speed} m/s`;
     document.getElementById('pressure').textContent = `${data.pressure} hPa`;
     document.getElementById('visibility').textContent = `${data.visibility} km`;
-    
+
     weatherDetails.style.display = 'block';
 }
 
@@ -292,23 +301,22 @@ async function loadForecast() {
 function displayForecast(forecasts) {
     const forecastHTML = forecasts.map(forecast => {
         const weatherIcon = getWeatherIcon(forecast.description, forecast.icon);
-        
         return `
             <div class="forecast-card">
                 <div class="forecast-day">${forecast.day}</div>
                 <div class="forecast-icon">${weatherIcon}</div>
-                <div class="forecast-temps">
-                    <span class="temp-high">${forecast.temp_max}°</span>
-                    <span class="temp-low">${forecast.temp_min}°</span>
+                <div class="forecast-temps main-stat">${forecast.temp_max}° / ${forecast.temp_min}°</div>
+                <div class="forecast-row">
+                    <span class="forecast-humidity stat-block humidity-block">💧 <span class="stat-label">Humidity</span> <span class="stat-value">${forecast.humidity}%</span></span>
+                    <span class="forecast-pressure stat-block pressure-block">📊 <span class="stat-label">Pressure</span> <span class="stat-value">${forecast.pressure ? forecast.pressure + ' hPa' : '--'}</span></span>
                 </div>
                 <div class="forecast-desc">${forecast.description}</div>
                 <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-light);">
-                    💧 ${forecast.humidity}% | 🌪️ ${forecast.wind_speed} m/s
+                    🌪️ ${forecast.wind_speed} m/s
                 </div>
             </div>
         `;
     }).join('');
-    
     document.getElementById('forecast-content').innerHTML = forecastHTML;
 }
 
